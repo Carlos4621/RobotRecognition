@@ -14,7 +14,7 @@
 namespace My {
 
 /// @brief Clase que representa un widget con opciones de transcripción de voz
-class VoiceRecoWidget : public QWidget {
+class VoiceRecognizer : public QWidget {
     Q_OBJECT
 public:
 
@@ -23,7 +23,7 @@ public:
     /// @param format Formato en el que se grabará el audio, debe ser compatible con los estándares de Whisper.cpp
     /// @param voiceModelPath Path al modelo de voz a utilizar
     /// @param parent Padre del widget
-    VoiceRecoWidget(const QAudioDevice& device, const QAudioFormat& format, std::string_view voiceModelPath, QWidget *parent = nullptr);
+    VoiceRecognizer(const QAudioDevice& device, const QAudioFormat& format, std::string_view voiceModelPath, QWidget *parent = nullptr);
 
 private slots:
 
@@ -43,8 +43,6 @@ private:
     QPushButton* stopButton_m{ nullptr };
 
     QFutureWatcher<QString>* transcription_m;
-
-    void setupLayout();
 };
 
 } // namespace My
