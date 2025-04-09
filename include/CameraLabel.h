@@ -1,4 +1,3 @@
-#pragma once
 #ifndef CAMERALABEL_H
 #define CAMERALABEL_H
 
@@ -58,6 +57,8 @@ signals:
     /// @param newFrame Nuevo frame mostrado
     void frameChanged(cv::Mat newFrame);
 
+    void errorOcurred(QString errorMessage);
+
 private:
 
     QTimer* cameraTimer_m;
@@ -66,7 +67,7 @@ private:
     cv::VideoCapture camera_m;
 
     [[nodiscard]]
-    static float FPStoInterval(float FPS) noexcept;
+    static constexpr float FPStoInterval(float FPS) noexcept;
 };
 
 #endif // CAMERALABEL_H
