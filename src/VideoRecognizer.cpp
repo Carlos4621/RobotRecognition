@@ -26,8 +26,8 @@ VideoRecognizer::VideoRecognizer(QWidget *parent)
     connect(movementDetector_m, &MovementDetector::movementDetected, this, &VideoRecognizer::displayDetectedMovement);
     connect(hazmatDetector_m, &YOLOv8Model::predictionsCompleted, this, &VideoRecognizer::displayDetectedHazmars);
 
-    hazmatDetector_m->loadOnnxNetwork("/home/carlos4621/Escritorio/Robot./Robot/resources/hazmatModel.onnx", cv::Size(640, 640), false);
-    hazmatDetector_m->loadClasses("/home/carlos4621/Escritorio/Robot./Robot/resources/hazmatClasses.txt");
+    hazmatDetector_m->loadOnnxNetwork("/home/carlos4621/Robot/resources/hazmatModel.onnx", cv::Size(640, 640), false);
+    hazmatDetector_m->loadClasses("/home/carlos4621/Robot/resources/hazmatClasses.txt");
 
     ui->cameraLabel->setCameraID(0);
     ui->cameraLabel->setFPS(13);
