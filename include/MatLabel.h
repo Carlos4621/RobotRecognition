@@ -1,4 +1,3 @@
-#pragma once
 #ifndef MATLABEL_H
 #define MATLABEL_H
 
@@ -16,7 +15,7 @@ public:
     /// @param parent Padre del widget
     explicit MatLabel(QWidget* parent = nullptr);
 
-    /// @brief setMat Muestra el Mat enviado
+    /// @brief setMat Muestra el Mat en el QLabel
     /// @param mat Mat a mostrar
     void setMat(const cv::Mat &mat);
 
