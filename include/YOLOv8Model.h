@@ -8,6 +8,7 @@
 #include <QObject>
 #include <QFutureWatcher>
 #include <QtConcurrent/QtConcurrent>
+#include "UIUtils.h"
 
 /// @brief Struct que contiene los datos de las predicciones
 struct PredictionsData {
@@ -66,6 +67,8 @@ private:
     cv::dnn::Net network_m;
 
     void startWorker(const cv::Mat& inputImage, double modelConfidenceThreshold, double modelScoreThreshold, double modelNMSThreshold);
+
+    void verifyModelLoaded();
 };
 
 #endif // YOLO_V8_MODEL_HEADER

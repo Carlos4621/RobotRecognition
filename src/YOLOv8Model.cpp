@@ -13,6 +13,8 @@ void YOLOv8Model::predictOnMat(const cv::Mat& inputImage, double modelConfidence
         return;
     }
 
+    verifyModelLoaded();
+
     startWorker(inputImage, modelConfidenceThreshold, modelScoreThreshold, modelNMSThreshold);
 }
 
@@ -26,7 +28,7 @@ void YOLOv8Model::emitIfPredicted() {
 
 void YOLOv8Model::startWorker(const cv::Mat &inputImage, double modelConfidenceThreshold, double modelScoreThreshold, double modelNMSThreshold) {
     predicterWorker_m->setFuture(QtConcurrent::run(
-        [this](cv::Mat inputImage, double modelConfidenceThreshold, double modelScoreThreshold, double modelNMSThreshold){
+        [this, inputImage, modelConfidenceThreshold, modelScoreThreshold, modelNMSThreshold] {
             cv::Mat blob;
             cv::dnn::blobFromImage(inputImage, blob, 1.0/255.0, modelInputSize_m, cv::Scalar{}, true);
             network_m.setInput(blob);
@@ -49,7 +51,7 @@ void YOLOv8Model::startWorker(const cv::Mat &inputImage, double modelConfidenceT
             std::vector<float> confidences;
             std::vector<cv::Rect> boxes;
 
-            for (int i{ 0 }; i < rows; ++i) {
+            for (size_t i{ 0 }; i < rows; ++i) {
 
                 auto const classes_scores{ data + 4 };
 
@@ -85,13 +87,26 @@ void YOLOv8Model::startWorker(const cv::Mat &inputImage, double modelConfidenceT
             cv::dnn::NMSBoxes(boxes, confidences, modelScoreThreshold, modelNMSThreshold, NMSResult);
 
             std::vector<PredictionsData> inferences;
+            inferences.reserve(NMSResult.size());
 
             for (const auto &i : NMSResult) {
                 inferences.emplace_back(classIDs[i], classNames_m[classIDs[i]], confidences[i], boxes[i]);
             }
 
             return inferences;
-        }, inputImage, modelConfidenceThreshold, modelNMSThreshold, modelNMSThreshold));
+        }));
+}
+
+void YOLOv8Model::verifyModelLoaded() {
+    if (network_m.empty()) {
+        UiUtils::showError("El modelo ONNX no está cargado");
+        return;
+    }
+    
+    if (classNames_m.empty()) {
+        UiUtils::showError("Las clases no están cargadas");
+        return;
+    }
 }
 
 void YOLOv8Model::loadClasses(std::string_view path) {
@@ -107,20 +122,26 @@ void YOLOv8Model::loadClasses(std::string_view path) {
 
     } 
     else {
-        throw std::runtime_error{ "Unable to load class names file" };
+        UiUtils::showError("Unable to load class names file with path: " + QString::fromUtf8(path.data()));
     }
 }
 
 void YOLOv8Model::loadOnnxNetwork(std::string_view path, const cv::Size2f& modelInputSize, bool cudaEnabled) {
     modelInputSize_m = modelInputSize;
-    network_m = cv::dnn::readNetFromONNX(path.data());
 
-    if (cudaEnabled) {
-        network_m.setPreferableBackend(cv::dnn::DNN_BACKEND_CUDA);
-        network_m.setPreferableTarget(cv::dnn::DNN_TARGET_CUDA);
-    }
-    else {
-        network_m.setPreferableBackend(cv::dnn::DNN_BACKEND_OPENCV);
-        network_m.setPreferableTarget(cv::dnn::DNN_TARGET_CPU);
+    try {
+        network_m = cv::dnn::readNetFromONNX(path.data());
+
+        if (cudaEnabled) {
+            network_m.setPreferableBackend(cv::dnn::DNN_BACKEND_CUDA);
+            network_m.setPreferableTarget(cv::dnn::DNN_TARGET_CUDA);
+        }
+        else {
+            network_m.setPreferableBackend(cv::dnn::DNN_BACKEND_OPENCV);
+            network_m.setPreferableTarget(cv::dnn::DNN_TARGET_CPU);
+        }
+
+    } catch (const cv::Exception& e) {
+        UiUtils::showError("Unable to load ONNX model with path: " + QString::fromUtf8(path.data()) + "\n" + QString::fromStdString(e.what()));
     }
 }
