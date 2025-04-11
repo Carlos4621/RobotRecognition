@@ -1,4 +1,3 @@
-#pragma once
 #ifndef QRDETECTOR_H
 #define QRDETECTOR_H
 
@@ -12,8 +11,6 @@ class QRDetector : public QObject {
 
     Q_OBJECT
 
-    using QRData = std::pair<QString, cv::Rect>;
-
 public:
 
     /// @brief QRDetector Constructor base
@@ -26,16 +23,18 @@ public:
 
 signals:
 
-    /// @brief QRDecoded Señal emitida cuando se termina de analizar la Mat enbusca de códigos QR
+    /// @brief QRDecoded Señal emitida cuando se termina de analizar la Mat en busca de códigos QR
     /// @param QRDecoded Código QR decodificado
     /// @param QRArea Rectángulo que contiene el código QR
     void QRDecoded(QString QRDecoded, cv::Rect QRArea);
 
 private slots:
 
-    void emitIfQRFounded();
+    void emitIfQRFound();
 
 private:
+
+    using QRData = std::pair<QString, cv::Rect>;
 
     QFutureWatcher<QRData>* QRDetectorWorker_m;
 

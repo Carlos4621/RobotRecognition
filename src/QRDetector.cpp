@@ -4,7 +4,7 @@ QRDetector::QRDetector(QWidget *parent)
     : QObject{ parent }
     , QRDetectorWorker_m{ new QFutureWatcher<QRData>{this} }
 {
-    connect(QRDetectorWorker_m, &QFutureWatcher<QRData>::finished, this, &QRDetector::emitIfQRFounded);
+    connect(QRDetectorWorker_m, &QFutureWatcher<QRData>::finished, this, &QRDetector::emitIfQRFound);
 }
 
 void QRDetector::detectQRsOnMat(const cv::Mat& image) {
@@ -15,9 +15,9 @@ void QRDetector::detectQRsOnMat(const cv::Mat& image) {
     startQRWorker(image);
 }
 
-void QRDetector::startQRWorker(const cv::Mat& originalImage) {
+void QRDetector::startQRWorker(const cv::Mat& image) {
     QRDetectorWorker_m->setFuture(QtConcurrent::run(
-        [this](cv::Mat image)
+        [this, image]
         {
             cv::cvtColor(image, image, cv::COLOR_BGR2GRAY);
             cv::equalizeHist(image, image);
@@ -28,14 +28,13 @@ void QRDetector::startQRWorker(const cv::Mat& originalImage) {
             const auto text = QString::fromStdString(decodedQR);
 
             return QRData{ text, cv::boundingRect(points) };
-        }
-        , originalImage));
+        }));
 }
 
-void QRDetector::emitIfQRFounded() {
+void QRDetector::emitIfQRFound() {
     const auto decodedQRData{ QRDetectorWorker_m->result() };
 
-    if (!decodedQRData.second.empty()) {
+    if (!decodedQRData.first.isEmpty() && !decodedQRData.second.empty() ) {
         emit QRDecoded(decodedQRData.first, decodedQRData.second);
     }
 }
