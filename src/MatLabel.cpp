@@ -39,7 +39,8 @@ QPixmap MatLabel::matToPixmap(const cv::Mat &toConvert) noexcept {
         break;
     
     default:
-        // Debería lanzar una excepción o dar un error?
+        UiUtils::showError("Formato de imagen no soportado");
+        return QPixmap{};
         break;
     }
 

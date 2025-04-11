@@ -3,6 +3,7 @@
 
 #include <QLabel>
 #include <opencv4/opencv2/opencv.hpp>
+#include "UIUtils.h"
 
 /// @brief QLabel con capacidad de mostrar cv::Mat
 class MatLabel : public QLabel {
