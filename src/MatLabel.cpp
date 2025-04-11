@@ -24,7 +24,26 @@ QPixmap MatLabel::matToPixmap(const cv::Mat &toConvert) noexcept {
         return QPixmap{};
     }
 
-    const QImage qtImage(reinterpret_cast<uint8_t*>(toConvert.data), toConvert.cols, toConvert.rows, toConvert.step, QImage::Format_BGR888);
+    QImage::Format imageFormat;
+    switch (toConvert.channels()) {
+    case 1:
+        imageFormat = QImage::Format_Grayscale8;
+        break;
+
+    case 3:
+        imageFormat = QImage::Format_BGR888;
+        break;
+
+    case 4:
+        imageFormat = QImage::Format_RGBA8888;
+        break;
+    
+    default:
+        // Debería lanzar una excepción o dar un error?
+        break;
+    }
+
+    const QImage qtImage(reinterpret_cast<uint8_t*>(toConvert.data), toConvert.cols, toConvert.rows, toConvert.step, imageFormat);
 
     return QPixmap::fromImage(qtImage);
 }

@@ -17,7 +17,7 @@ public:
 
     /// @brief setMat Muestra el Mat en el QLabel
     /// @param mat Mat a mostrar
-    void setMat(const cv::Mat &mat);
+    void setMat(const cv::Mat& newMat);
 
     /// @brief getMat Obtiene el Mat mostrado
     /// @return Mat mostrado
@@ -28,7 +28,7 @@ signals:
 
     /// @brief matChanged Señal emitida cuando se cambia el Mat mostrado
     /// @param newMat Nuevo Mat
-    void matChanged(cv::Mat newMat);
+    void matChanged(const cv::Mat& newMat);
 
 private:
 
