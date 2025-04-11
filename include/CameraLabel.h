@@ -6,6 +6,7 @@
 #include <QTimer>
 #include "MatLabel.h"
 #include <QLayout>
+#include "UIUtils.h"
 
 /// @brief Permite mostrar tu cámara en un MatLabel
 class CameraLabel : public QWidget {
@@ -56,8 +57,6 @@ signals:
     /// @brief frameChanged Emitido cuando la cámara muestra otro frame
     /// @param newFrame Nuevo frame mostrado
     void frameChanged(cv::Mat newFrame);
-
-    void errorOcurred(QString errorMessage);
 
 private:
 

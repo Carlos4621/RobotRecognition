@@ -13,7 +13,7 @@ CameraLabel::CameraLabel(QWidget *parent)
 
 void CameraLabel::setFPS(float targetFPS) {
     if (targetFPS <= 0) {
-        emit errorOcurred(QString::fromUtf8("Invalid FPS: ") + QString::number(targetFPS));
+        UiUtils::showError("FPS inválidos: " + QString::number(targetFPS));
         return;
     }
 
@@ -26,7 +26,8 @@ void CameraLabel::setCameraID(uint8_t newID) {
     camera_m.open(newID);
 
     if (!camera_m.isOpened()) {
-        emit errorOcurred(QString::fromUtf8("Camera not opened with ID: ") + QString::number(newID));
+        UiUtils::showError("No se puede abrir la cámara con ID: " + QString::number(newID));
+        stopCamera();
         return;
     }
 
@@ -55,7 +56,8 @@ void CameraLabel::nextFrame() {
     camera_m >> nextFrame;
 
     if (nextFrame.empty()) {
-        emit errorOcurred(QString::fromUtf8("Empty frame"));
+        UiUtils::showError("No se puede obtener el siguiente frame");
+        stopCamera();
         return;
     }
 
