@@ -102,10 +102,9 @@ void MovementDetector::emitIfMovementDetected() {
 }
 
 void MovementDetector::startWorker(const cv::Mat& image) {
-    cv::Mat imageCopy = image.clone();
     movementDetectorWorker_m.setFuture(QtConcurrent::run(
-        [this, imageCopy]() {
-            return this->processImage(imageCopy);
+        [this, image]() {
+            return this->processImage(image);
         }
     ));
 }
