@@ -1,5 +1,5 @@
-#ifndef QRDETECTOR_H
-#define QRDETECTOR_H
+#ifndef QR_DETECTOR_HEADER
+#define QR_DETECTOR_HEADER
 
 #include <QWidget>
 #include <QtConcurrent/QtConcurrent>
@@ -43,4 +43,4 @@ private:
     void startQRWorker(const cv::Mat &image);
 };
 
-#endif // QRDETECTOR_H
+#endif // QR_DETECTOR_HEADER

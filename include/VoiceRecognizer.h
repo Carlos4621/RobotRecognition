@@ -1,6 +1,5 @@
-#pragma once
-#ifndef VOICERECOWIDGET_H
-#define VOICERECOWIDGET_H
+#ifndef VOICE_RECOGNIZER_HEADER
+#define VOICE_RECOGNIZER_HEADER
 
 #include <QWidget>
 #include <QtMultimedia>
@@ -47,4 +46,4 @@ private:
 
 } // namespace My
 
-#endif // VOICERECOWIDGET_H
+#endif // VOICE_RECOGNIZER_HEADER

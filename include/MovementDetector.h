@@ -1,6 +1,5 @@
-#pragma once
-#ifndef MOVEMENTDETECTOR_H
-#define MOVEMENTDETECTOR_H
+#ifndef MOVEMENT_DETECTOR_HEADER
+#define MOVEMENT_DETECTOR_HEADER
 
 #include <QObject>
 #include <opencv4/opencv2/opencv.hpp>
@@ -77,4 +76,4 @@ private:
     std::vector<cv::Rect> processImage(cv::Mat workingImage);
 };
 
-#endif // MOVEMENTDETECTOR_H
+#endif // MOVEMENT_DETECTOR_HEADER

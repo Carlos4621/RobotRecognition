@@ -1,6 +1,5 @@
-#pragma once
-#ifndef INFERENCER_HEADER
-#define INFERENCER_HEADER
+#ifndef YOLO_V8_MODEL_HEADER
+#define YOLO_V8_MODEL_HEADER
 
 #include <vector>
 #include <string>
@@ -69,4 +68,4 @@ private:
     void startWorker(const cv::Mat& inputImage, double modelConfidenceThreshold, double modelScoreThreshold, double modelNMSThreshold);
 };
 
-#endif // INFERENCE_H
+#endif // YOLO_V8_MODEL_HEADER

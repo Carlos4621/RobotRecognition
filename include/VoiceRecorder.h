@@ -1,6 +1,5 @@
-#pragma once
-#ifndef BUFFERVOICERECORDER_H
-#define BUFFERVOICERECORDER_H
+#ifndef VOICE_RECORDER_HEADER
+#define VOICE_RECORDER_HEADER
 
 #include <QObject>
 #include <QtMultimedia>
@@ -47,4 +46,4 @@ private:
 
 } // namespace My
 
-#endif // BUFFERVOICERECORDER_H
+#endif // VOICE_RECORDER_HEADER

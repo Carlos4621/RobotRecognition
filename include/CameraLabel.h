@@ -1,5 +1,5 @@
-#ifndef CAMERALABEL_H
-#define CAMERALABEL_H
+#ifndef CAMERA_LABEL_HEADER
+#define CAMERA_LABEL_HEADER
 
 #include <QLabel>
 #include <QObject>
@@ -69,4 +69,4 @@ private:
     static constexpr float FPStoInterval(float FPS) noexcept;
 };
 
-#endif // CAMERALABEL_H
+#endif // CAMERA_LABEL_HEADER

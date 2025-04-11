@@ -1,5 +1,5 @@
-#ifndef MATLABEL_H
-#define MATLABEL_H
+#ifndef MAT_LABEL_HEADER
+#define MAT_LABEL_HEADER
 
 #include <QLabel>
 #include <opencv4/opencv2/opencv.hpp>
@@ -39,4 +39,4 @@ private:
     static QPixmap matToPixmap(const cv::Mat& toConvert) noexcept;
 };
 
-#endif // MATLABEL_H
+#endif // MAT_LABEL_HEADER

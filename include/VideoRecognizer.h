@@ -1,5 +1,5 @@
-#ifndef VIDEORECOGNIZER_H
-#define VIDEORECOGNIZER_H
+#ifndef VIDEO_RECOGNIZER_HEADER
+#define VIDEO_RECOGNIZER_HEADER
 
 #include <QWidget>
 #include <opencv4/opencv2/opencv.hpp>
@@ -49,4 +49,4 @@ private:
     void detectHazmatIfChecked(cv::Mat frame);
 };
 
-#endif // VIDEORECOGNIZER_H
+#endif // VIDEO_RECOGNIZER_HEADER

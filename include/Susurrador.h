@@ -1,6 +1,5 @@
-#pragma once
-#ifndef SUSURRADOR_H
-#define SUSURRADOR_H
+#ifndef SUSURRADOR_HEADER
+#define SUSURRADOR_HEADER
 
 #include <whisper.h>
 #include <string_view>
@@ -32,4 +31,4 @@ private:
 
 }
 
-#endif // SUSURRADOR_H
+#endif // SUSURRADOR_HEADER
