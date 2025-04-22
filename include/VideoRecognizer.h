@@ -8,6 +8,9 @@
 #include "QRDetector.h"
 #include "MovementDetector.h"
 #include "YOLOv8Model.h"
+#include <QMenu>
+#include "VideoRecognizerConfiguration.h"
+#include <QSettings>
 
 namespace Ui {
 class VideoRecognizer;
@@ -16,10 +19,6 @@ class VideoRecognizer;
 class VideoRecognizer : public QWidget {
 
     Q_OBJECT
-
-    static const cv::Scalar QRRectangleColor;
-    static const cv::Scalar MovementRectagleColor;
-    static const cv::Scalar HazmatRectangleColor;
 
 public:
 
@@ -38,15 +37,32 @@ private slots:
 
 private:
 
+    static const cv::Scalar QRRectangleColor;
+    static const cv::Scalar MovementRectagleColor;
+    static const cv::Scalar HazmatRectangleColor;
+
     Ui::VideoRecognizer* ui;
+
+    QMenu* contextMenu_m;
+    QAction* configurationAction_m;
+    VideoRecognizerConfiguration* configurationDialog_m;
 
     QRDetector* QRDetector_m;
     MovementDetector* movementDetector_m;
     YOLOv8Model* hazmatDetector_m;
 
+    QSettings settings_m;
+
     void detectQRIfChecked(cv::Mat frame);
     void detectMovementIfChecked(cv::Mat frame);
     void detectHazmatIfChecked(cv::Mat frame);
+
+    void showContextMenu(const QPoint& mousePosition);
+    void showConfigurationDialog();
+
+    void applyConfigurationChanges();
+    void loadConfigurations();
+    void saveConfigurations();
 };
 
 #endif // VIDEO_RECOGNIZER_HEADER

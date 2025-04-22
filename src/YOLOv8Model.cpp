@@ -120,10 +120,16 @@ void YOLOv8Model::loadClasses(std::string_view path) {
             classNames_m.push_back(classLine);
         }
 
+        classesPath_m = path.data();
+
     } 
     else {
         UiUtils::showError("Unable to load class names file with path: " + QString::fromUtf8(path.data()));
     }
+}
+
+std::string YOLOv8Model::getClassesPath() const noexcept {
+    return classesPath_m;
 }
 
 void YOLOv8Model::loadOnnxNetwork(std::string_view path, const cv::Size2f& modelInputSize, bool cudaEnabled) {
@@ -141,7 +147,13 @@ void YOLOv8Model::loadOnnxNetwork(std::string_view path, const cv::Size2f& model
             network_m.setPreferableTarget(cv::dnn::DNN_TARGET_CPU);
         }
 
+        onnxPath_m = path.data();
+
     } catch (const cv::Exception& e) {
         UiUtils::showError("Unable to load ONNX model with path: " + QString::fromUtf8(path.data()) + "\n" + QString::fromStdString(e.what()));
     }
+}
+
+std::string YOLOv8Model::getOnnxPath() const noexcept {
+    return onnxPath_m;
 }

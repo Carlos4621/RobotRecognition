@@ -23,9 +23,19 @@ public:
     /// @param targetFPS FPS a establecer
     void setFPS(float targetFPS);
 
+    /// @brief getFPS Obtiene los fotogramas por segundo actuales
+    /// @return FPS actuales
+    [[nodiscard]]
+    float getFPS() const noexcept;
+
     /// @brief setCameraID Cambia el ID de la cámara a mostrar
     /// @param newID ID de la nueva cámara
     void setCameraID(uint8_t newID);
+
+    /// @brief Obtiene el ID de la cámara actual
+    /// @return ID de la cámara actual
+    [[nodiscard]]
+    uint8_t getCameraID() const noexcept;
 
     /// @brief drawRectangle Dibuja un rectángulo en la posición deseada
     /// @param topLeft Punto de la esquina superior izquierda del rectángulo
@@ -65,8 +75,13 @@ private:
 
     cv::VideoCapture camera_m;
 
+    uint8_t cameraID_m{ 0 };
+
     [[nodiscard]]
     static constexpr float FPStoInterval(float FPS) noexcept;
+
+    [[nodiscard]]
+    static constexpr float intervalToFPS(float interval) noexcept;
 };
 
 #endif // CAMERA_LABEL_HEADER

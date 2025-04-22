@@ -22,6 +22,10 @@ void CameraLabel::setFPS(float targetFPS) {
     emit FPSChanged(targetFPS);
 }
 
+float CameraLabel::getFPS() const noexcept {
+    return intervalToFPS(cameraTimer_m->interval());
+}
+
 void CameraLabel::setCameraID(uint8_t newID) {
     camera_m.open(newID);
 
@@ -31,7 +35,13 @@ void CameraLabel::setCameraID(uint8_t newID) {
         return;
     }
 
+    cameraID_m = newID;
+
     emit cameraIDChanged(newID);
+}
+
+uint8_t CameraLabel::getCameraID() const noexcept {
+    return cameraID_m;
 }
 
 void CameraLabel::drawRectangle(const cv::Point &topLeft, const cv::Point &bottomRight, const cv::Scalar& color) {
@@ -68,4 +78,8 @@ void CameraLabel::nextFrame() {
 
 constexpr float CameraLabel::FPStoInterval(float FPS) noexcept {
     return 1000.f / FPS;
+}
+
+constexpr float CameraLabel::intervalToFPS(float interval) noexcept {
+    return 1000.f / interval;
 }

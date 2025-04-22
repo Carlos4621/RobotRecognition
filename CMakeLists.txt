@@ -47,7 +47,6 @@ qt_add_executable(Robot
     ${PROJECT_SOURCES}
 )
 
-
 target_link_libraries(Robot PRIVATE Qt6::Widgets Qt6::Multimedia Qt6::Concurrent)
 target_link_libraries(Robot PRIVATE ${OpenCV_LIBS} whisper)
 

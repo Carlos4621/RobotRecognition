@@ -6,13 +6,23 @@ const cv::Scalar VideoRecognizer::MovementRectagleColor{ 255, 255, 0 };
 const cv::Scalar VideoRecognizer::HazmatRectangleColor{ 0, 255, 255};
 
 VideoRecognizer::VideoRecognizer(QWidget *parent)
-    : QWidget(parent)
+    : QWidget{ parent }
     , ui(new Ui::VideoRecognizer)
     , QRDetector_m{ new QRDetector{this} }
     , movementDetector_m{ new MovementDetector{this} }
     , hazmatDetector_m{ new YOLOv8Model{this} }
+    , contextMenu_m{ new QMenu{this} }
+    , configurationAction_m{ new QAction{tr("Configuration"), this} }
+    , configurationDialog_m{ new VideoRecognizerConfiguration{ this } }
+    , settings_m{ "ControladorRobot", "VideoRecognizer" }
 {
     ui->setupUi(this);
+    setContextMenuPolicy(Qt::CustomContextMenu);
+
+    contextMenu_m->addAction(configurationAction_m);
+
+    connect(this, &VideoRecognizer::customContextMenuRequested, this, &VideoRecognizer::showContextMenu);
+    connect(configurationAction_m, &QAction::triggered, this, &VideoRecognizer::showConfigurationDialog);
 
     connect(ui->cameraLabel, &CameraLabel::frameChanged, this, &VideoRecognizer::detectQRIfChecked);
     connect(ui->cameraLabel, &CameraLabel::frameChanged, this, &VideoRecognizer::detectMovementIfChecked);
@@ -26,11 +36,8 @@ VideoRecognizer::VideoRecognizer(QWidget *parent)
     connect(movementDetector_m, &MovementDetector::movementDetected, this, &VideoRecognizer::displayDetectedMovement);
     connect(hazmatDetector_m, &YOLOv8Model::predictionsCompleted, this, &VideoRecognizer::displayDetectedHazmars);
 
-    hazmatDetector_m->loadOnnxNetwork("/home/carlos4621/Robot/resources/hazmatModel.onnx", cv::Size(640, 640), false);
-    hazmatDetector_m->loadClasses("/home/carlos4621/Robot/resources/hazmatClasses.txt");
+    loadConfigurations();
 
-    ui->cameraLabel->setCameraID(0);
-    ui->cameraLabel->setFPS(13);
     ui->cameraLabel->startCamera();
 }
 
@@ -94,4 +101,45 @@ void VideoRecognizer::detectHazmatIfChecked(cv::Mat frame) {
     if (ui->detectHazmat->isChecked()) {
         hazmatDetector_m->predictOnMat(frame);
     }
+}
+
+void VideoRecognizer::showContextMenu(const QPoint &mousePosition) {
+    contextMenu_m->exec(mapToGlobal(mousePosition));
+}
+
+void VideoRecognizer::showConfigurationDialog() {
+    configurationDialog_m->exec();
+
+    if (configurationDialog_m->result() == QDialog::Accepted) {
+        applyConfigurationChanges();
+        saveConfigurations();
+    } else {
+        configurationDialog_m->loadConfigurations();
+    }
+}
+
+void VideoRecognizer::applyConfigurationChanges() {
+    ui->cameraLabel->setCameraID(configurationDialog_m->getCameraID());
+    ui->cameraLabel->setFPS(configurationDialog_m->getFPS());
+    ui->cameraLabel->startCamera();
+    hazmatDetector_m->loadOnnxNetwork(configurationDialog_m->getONNXPath(), {640, 640}, false);
+    hazmatDetector_m->loadClasses(configurationDialog_m->getClassesPath());
+}
+
+void VideoRecognizer::loadConfigurations() {
+    settings_m.beginGroup("VideoRecognizer");
+    ui->cameraLabel->setCameraID(settings_m.value("cameraID", 0).toUInt());
+    ui->cameraLabel->setFPS(settings_m.value("fps", 15).toFloat());
+    hazmatDetector_m->loadOnnxNetwork(settings_m.value("onnxPath", "~").toString().toStdString(), {640, 640}, false);
+    hazmatDetector_m->loadClasses(settings_m.value("classesPath", "~").toString().toStdString());
+    settings_m.endGroup();
+}
+
+void VideoRecognizer::saveConfigurations() {
+    settings_m.beginGroup("VideoRecognizer");
+    settings_m.setValue("cameraID", ui->cameraLabel->getCameraID());
+    settings_m.setValue("fps", ui->cameraLabel->getFPS());
+    settings_m.setValue("onnxPath", QString::fromStdString(hazmatDetector_m->getOnnxPath()));
+    settings_m.setValue("classesPath", QString::fromStdString(hazmatDetector_m->getClassesPath()));
+    settings_m.endGroup();
 }

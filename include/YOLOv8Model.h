@@ -33,11 +33,21 @@ public:
     /// @param path Ruta al archivo .txt
     void loadClasses(std::string_view path);
 
+    /// @brief getClassesPath Obtiene la ruta al archivo .txt que contiene los IDs de las predicciones
+    /// @return Ruta al archivo .txt
+    [[nodiscard]]
+    std::string getClassesPath() const noexcept;
+
     /// @brief loadOnnxNetwork Carga el archivo .onnx que contiene el modelo a usar
     /// @param path Ruta al archivo .onnx
     /// @param modelInputSize Tamaño a redimensionar de la imagen antes de aplicarse el modelo
     /// @param cudaEnabled Activa CUDA
     void loadOnnxNetwork(std::string_view path, const cv::Size2f& modelInputSize, bool cudaEnabled);
+
+    /// @brief Devuelve el path al modelo onnx usado
+    /// @return Path al modelo onnx
+    [[nodiscard]]
+    std::string getOnnxPath() const noexcept;
 
     /// @brief Aplica el modelo a la imagen proporcionada y emite predictionsCompleted cuando termina
     /// @param inputImage Imagen a usar
@@ -65,6 +75,9 @@ private:
     cv::Size2f modelInputSize_m{ 640, 640 };
 
     cv::dnn::Net network_m;
+
+    std::string onnxPath_m;
+    std::string classesPath_m;
 
     void startWorker(const cv::Mat& inputImage, double modelConfidenceThreshold, double modelScoreThreshold, double modelNMSThreshold);
 
