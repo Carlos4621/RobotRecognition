@@ -1,4 +1,5 @@
 #include "MovementDetector.h"
+#include "VideoRecognizerConfiguration.h"
 
 MovementDetector::MovementDetector(QObject *parent)
     : QObject{parent}
@@ -28,6 +29,10 @@ void MovementDetector::setHistory(int history) {
     changesToApplyToBackgroundSubstractor_m = true;
 }
 
+int MovementDetector::getHistory() const noexcept {
+    return history_m;
+}
+
 void MovementDetector::setThreshold(double threshold) {
     if (threshold < 0) {
         UiUtils::showError("Threshold must be greater than or equal to 0");
@@ -38,13 +43,25 @@ void MovementDetector::setThreshold(double threshold) {
     changesToApplyToBackgroundSubstractor_m = true;
 }
 
+double MovementDetector::getThreshold() const noexcept {
+    return threshold_m;
+}
+
 void MovementDetector::setDetectShadows(bool detectShadows) {
     detectShadows_m = detectShadows;
     changesToApplyToBackgroundSubstractor_m = true;
 }
 
+bool MovementDetector::getDetectShadows() const noexcept {
+    return detectShadows_m;
+}
+
 void MovementDetector::setRectangleMinSize(size_t size) {
     detectionRectangleMinimumSize_m = size;
+}
+
+size_t MovementDetector::getRectangleMinSize() const noexcept {
+    return detectionRectangleMinimumSize_m;
 }
 
 void MovementDetector::setDetectionThreshold(int threshold) {
@@ -56,7 +73,12 @@ void MovementDetector::setDetectionThreshold(int threshold) {
     detectionThreshold_m = threshold;
 }
 
-void MovementDetector::applyChangesIfRequired() {
+int MovementDetector::getDetectionThreshold() const noexcept {
+    return detectionThreshold_m;
+}
+
+void MovementDetector::applyChangesIfRequired()
+{
     if (changesToApplyToBackgroundSubstractor_m) {
         auto newBgSubtractor = cv::createBackgroundSubtractorMOG2(history_m, threshold_m, detectShadows_m);
 

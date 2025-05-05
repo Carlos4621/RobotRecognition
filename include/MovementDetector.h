@@ -27,21 +27,46 @@ public:
     /// @param history Número de frames a tener en cuenta
     void setHistory(int history);
 
+    /// @brief Obtiene el número de frames a tener en cuenta para la detección de movimiento
+    /// @return Número de frames a tener en cuenta
+    [[nodiscard]]
+    int getHistory() const noexcept;
+
     /// @brief setThreshold Cambia el umbral de diferencia entre frames para la detección de movimiento
     /// @param threshold Umbral de diferencia entre frames
     void setThreshold(double threshold);
+
+    /// @brief Obtiene el umbral de diferencia entre frames para la detección de movimiento
+    /// @return El umbral de diferencia entre frames
+    [[nodiscard]]
+    double getThreshold() const noexcept;
 
     /// @brief setDetectShadows Cambia si se detectan sombras o no
     /// @param detectShadows Si se detectan sombras o no
     void setDetectShadows(bool detectShadows);
 
+    /// @brief Obtiene si se detectan sombras o no
+    /// @return El valor de si se detectan sombras o no
+    [[nodiscard]]
+    bool getDetectShadows() const noexcept;
+
     /// @brief setRectangleMinSize Cambia el tamaño mínimo de los cuadros contenedores del movimiento
     /// @param size Tamaño mínimo de los cuadros contenedores del movimiento
     void setRectangleMinSize(size_t size);
 
+    /// @brief Obtiene el tamaño mínimo de los cuadros contenedores del movimiento
+    /// @return El tamaño mínimo de los cuadros contenedores del movimiento
+    [[nodiscard]]
+    size_t getRectangleMinSize() const noexcept;
+
     /// @brief setDetectionThreshold Cambia el umbral de detección de movimiento
     /// @param threshold Umbral de detección de movimiento
     void setDetectionThreshold(int threshold);
+
+    /// @brief Obtiene el umbral de detección de movimiento
+    /// @return El umbral de detección de movimiento
+    [[nodiscard]]
+    int getDetectionThreshold() const noexcept;
 
 signals:
 

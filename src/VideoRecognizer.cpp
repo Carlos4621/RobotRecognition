@@ -124,6 +124,11 @@ void VideoRecognizer::applyConfigurationChanges() {
     ui->cameraLabel->startCamera();
     hazmatDetector_m->loadOnnxNetwork(configurationDialog_m->getONNXPath(), {640, 640}, false);
     hazmatDetector_m->loadClasses(configurationDialog_m->getClassesPath());
+    movementDetector_m->setHistory(configurationDialog_m->getImageHistory());
+    movementDetector_m->setRectangleMinSize(configurationDialog_m->getRectangleMinSize());
+    movementDetector_m->setDetectionThreshold(configurationDialog_m->getDetectionThreshold());
+    movementDetector_m->setThreshold(configurationDialog_m->getMovementThreshold());
+    movementDetector_m->setDetectShadows(configurationDialog_m->getDetectShadows());
 }
 
 void VideoRecognizer::loadConfigurations() {
@@ -132,14 +137,26 @@ void VideoRecognizer::loadConfigurations() {
     ui->cameraLabel->setFPS(settings_m.value("fps", 15).toFloat());
     hazmatDetector_m->loadOnnxNetwork(settings_m.value("onnxPath", "~").toString().toStdString(), {640, 640}, false);
     hazmatDetector_m->loadClasses(settings_m.value("classesPath", "~").toString().toStdString());
+    movementDetector_m->setHistory(settings_m.value("imageHistory", 500).toInt());
+    movementDetector_m->setRectangleMinSize(settings_m.value("rectangleMinSize", 5000).toULongLong());
+    movementDetector_m->setDetectionThreshold(settings_m.value("detectionThreshold", 50).toInt());
+    movementDetector_m->setThreshold(settings_m.value("movementThreshold", 16).toDouble());
+    movementDetector_m->setDetectShadows(settings_m.value("detectShadows", false).toBool());
     settings_m.endGroup();
 }
 
 void VideoRecognizer::saveConfigurations() {
     settings_m.beginGroup("VideoRecognizer");
-    settings_m.setValue("cameraID", ui->cameraLabel->getCameraID());
-    settings_m.setValue("fps", ui->cameraLabel->getFPS());
-    settings_m.setValue("onnxPath", QString::fromStdString(hazmatDetector_m->getOnnxPath()));
-    settings_m.setValue("classesPath", QString::fromStdString(hazmatDetector_m->getClassesPath()));
+    
+    settings_m.setValue("cameraID", configurationDialog_m->getCameraID());
+    settings_m.setValue("fps", configurationDialog_m->getFPS());
+    settings_m.setValue("onnxPath", QString::fromStdString(configurationDialog_m->getONNXPath()));
+    settings_m.setValue("classesPath", QString::fromStdString(configurationDialog_m->getClassesPath()));
+    settings_m.setValue("imageHistory", configurationDialog_m->getImageHistory());
+    settings_m.setValue("rectangleMinSize", configurationDialog_m->getRectangleMinSize());
+    settings_m.setValue("detectionThreshold", configurationDialog_m->getDetectionThreshold());
+    settings_m.setValue("movementThreshold", configurationDialog_m->getMovementThreshold());
+    settings_m.setValue("detectShadows", configurationDialog_m->getDetectShadows());
+    
     settings_m.endGroup();
 }

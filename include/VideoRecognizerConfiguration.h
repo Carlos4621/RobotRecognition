@@ -42,6 +42,31 @@ public:
     [[nodiscard]]
     std::string getClassesPath() const noexcept;
 
+    /// @brief Obtiene el valor dentro del campo imageHistory
+    /// @return Valor dentro del campo imageHistory
+    [[nodiscard]]
+    int getImageHistory() const noexcept;
+
+    /// @brief Obtiene el valor dentro del campo rectangleMinSize
+    /// @return Valor dentro del campo rectangleMinSize
+    [[nodiscard]]
+    int getRectangleMinSize() const noexcept;
+
+    /// @brief Obtiene el valor dentro del campo framesThreshold
+    /// @return Valor dentro del campo framesThreshold
+    [[nodiscard]]
+    int getDetectionThreshold() const noexcept;
+
+    /// @brief Obtiene el valor dentro del campo movementThreshold
+    /// @return Valor dentro del campo movementThreshold
+    [[nodiscard]]
+    double getMovementThreshold() const noexcept;
+
+    /// @brief Obtiene el valor dentro del campo detectShadows
+    /// @return Valor dentro del campo detectShadows
+    [[nodiscard]]
+    bool getDetectShadows() const noexcept;
+
     /// @brief Carga la configuración guardada anteriormente
     void loadConfigurations();
 
