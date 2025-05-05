@@ -11,9 +11,9 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 add_subdirectory(whisper.cpp)
 
-set(CMAKE_PREFIX_PATH "/home/carlos4621/Qt/6.8.1/gcc_64/lib/cmake/")
+set(CMAKE_PREFIX_PATH "/home/carlos4621/Qt/6.4.2/gcc_64/lib/cmake/")
 
-find_package(Qt6 REQUIRED COMPONENTS Widgets LinguistTools Concurrent Multimedia)
+find_package(Qt6 REQUIRED COMPONENTS Widgets Concurrent Multimedia)
 find_package(OpenCV REQUIRED)
 
 include_directories(
