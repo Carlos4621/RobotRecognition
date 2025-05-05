@@ -7,6 +7,7 @@ VideoRecognizerConfiguration::VideoRecognizerConfiguration(QWidget *parent) :
     settings_m{ "ControladorRobot", "VideoRecognizer" }
 {
     ui->setupUi(this);
+    ui->cameraID->setValidator(new QIntValidator{this});
     loadConfigurations();
 }
 
