@@ -34,7 +34,7 @@ VideoRecognizer::VideoRecognizer(QWidget *parent)
 
     connect(QRDetector_m, &QRDetector::QRDecoded, this, &VideoRecognizer::displayDetectedQRs);
     connect(movementDetector_m, &MovementDetector::movementDetected, this, &VideoRecognizer::displayDetectedMovement);
-    connect(hazmatDetector_m, &YOLOv8Model::predictionsCompleted, this, &VideoRecognizer::displayDetectedHazmars);
+    connect(hazmatDetector_m, &YOLOv8Model::predictionsCompleted, this, &VideoRecognizer::displayDetectedHazmats);
 
     loadConfigurations();
 
@@ -62,7 +62,7 @@ void VideoRecognizer::displayDetectedMovement(std::vector<cv::Rect> boundingRect
     ui->movementOutput->setText("Detectado!");
 }
 
-void VideoRecognizer::displayDetectedHazmars(std::vector<PredictionsData> predictions) {
+void VideoRecognizer::displayDetectedHazmats(std::vector<PredictionsData> predictions) {
     ui->hazmatOutput->setText(QString::fromStdString(predictions[0].className));
 }
 

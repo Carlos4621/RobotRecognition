@@ -29,7 +29,7 @@ private slots:
 
     void displayDetectedQRs(QString QRDecoded, cv::Rect boundingRectangle);
     void displayDetectedMovement(std::vector<cv::Rect> boundingRectangles);
-    void displayDetectedHazmars(std::vector<PredictionsData> predictions);
+    void displayDetectedHazmats(std::vector<PredictionsData> predictions);
 
     void onDetectMovementCheckboxChanged(const Qt::CheckState &newState);
     void onDetectQRCheckboxChanged(const Qt::CheckState& newState);
