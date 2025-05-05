@@ -31,10 +31,6 @@ private slots:
     void displayDetectedMovement(std::vector<cv::Rect> boundingRectangles);
     void displayDetectedHazmats(std::vector<PredictionsData> predictions);
 
-    void onDetectMovementCheckboxChanged(const Qt::CheckState &newState);
-    void onDetectQRCheckboxChanged(const Qt::CheckState& newState);
-    void onDetectHazmatCheckboxChanged(const Qt::CheckState& newState);
-
 private:
 
     static const cv::Scalar QRRectangleColor;

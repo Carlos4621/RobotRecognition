@@ -28,9 +28,9 @@ VideoRecognizer::VideoRecognizer(QWidget *parent)
     connect(ui->cameraLabel, &CameraLabel::frameChanged, this, &VideoRecognizer::detectMovementIfChecked);
     connect(ui->cameraLabel, &CameraLabel::frameChanged, this, &VideoRecognizer::detectHazmatIfChecked);
 
-    connect(ui->detectMovement, &QCheckBox::checkStateChanged, this, &VideoRecognizer::onDetectMovementCheckboxChanged);
-    connect(ui->detectQR, &QCheckBox::checkStateChanged, this, &VideoRecognizer::onDetectQRCheckboxChanged);
-    connect(ui->detectHazmat, &QCheckBox::checkStateChanged, this, &VideoRecognizer::onDetectHazmatCheckboxChanged);
+    connect(ui->detectMovement, &QCheckBox::toggled, this, [this](bool checked) { if (!checked) ui->movementOutput->clear(); });
+    connect(ui->detectQR, &QCheckBox::toggled, this, [this](bool checked){ if (!checked) ui->QROutput->clear(); });
+    connect(ui->detectHazmat, &QCheckBox::toggled, this, [this](bool checked){ if (!checked) ui->hazmatOutput->clear(); }); ;
 
     connect(QRDetector_m, &QRDetector::QRDecoded, this, &VideoRecognizer::displayDetectedQRs);
     connect(movementDetector_m, &MovementDetector::movementDetected, this, &VideoRecognizer::displayDetectedMovement);
@@ -64,24 +64,6 @@ void VideoRecognizer::displayDetectedMovement(std::vector<cv::Rect> boundingRect
 
 void VideoRecognizer::displayDetectedHazmats(std::vector<PredictionsData> predictions) {
     ui->hazmatOutput->setText(QString::fromStdString(predictions[0].className));
-}
-
-void VideoRecognizer::onDetectMovementCheckboxChanged(const Qt::CheckState &newState) {
-    if (newState == Qt::Unchecked) {
-        ui->movementOutput->clear();
-    }
-}
-
-void VideoRecognizer::onDetectQRCheckboxChanged(const Qt::CheckState &newState) {
-    if (newState == Qt::Unchecked) {
-        ui->QROutput->clear();
-    }
-}
-
-void VideoRecognizer::onDetectHazmatCheckboxChanged(const Qt::CheckState &newState) {
-    if (newState == Qt::Unchecked) {
-        ui->hazmatOutput->clear();
-    }
 }
 
 void VideoRecognizer::detectQRIfChecked(cv::Mat frame) {
