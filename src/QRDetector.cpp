@@ -19,13 +19,14 @@ void QRDetector::startQRWorker(const cv::Mat& image) {
     QRDetectorWorker_m->setFuture(QtConcurrent::run(
         [this, image]
         {
-            cv::cvtColor(image, image, cv::COLOR_BGR2GRAY);
-            cv::equalizeHist(image, image);
+            cv::Mat processedImage;
+            cv::cvtColor(image, processedImage, cv::COLOR_BGR2GRAY);
+            cv::equalizeHist(processedImage, processedImage);
 
             std::vector<cv::Point> points;
-            const auto decodedQR{ QRDetector_m.detectAndDecode(image, points) };
+            const auto decodedQR{ QRDetector_m.detectAndDecode(processedImage, points) };
 
-            const auto text = QString::fromStdString(decodedQR);
+            const auto text{ QString::fromStdString(decodedQR) };
 
             return QRData{ text, cv::boundingRect(points) };
         }));
