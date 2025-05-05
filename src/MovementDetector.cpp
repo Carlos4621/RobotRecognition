@@ -3,6 +3,7 @@
 MovementDetector::MovementDetector(QObject *parent)
     : QObject{parent}
     , backgroundSubstractor_m{ cv::createBackgroundSubtractorMOG2(history_m, threshold_m, detectShadows_m) }
+    , morphKernel_m{ cv::getStructuringElement(cv::MORPH_RECT, cv::Size{ 3, 3 }) }
 {
     connect(&movementDetectorWorker_m, &QFutureWatcher<std::vector<cv::Rect>>::finished, this, &MovementDetector::emitIfMovementDetected);
 }
@@ -43,7 +44,7 @@ void MovementDetector::setDetectShadows(bool detectShadows) {
 }
 
 void MovementDetector::setRectangleMinSize(size_t size) {
-    detectionRectangleMinimunSize_m = size;
+    detectionRectangleMinimumSize_m = size;
 }
 
 void MovementDetector::setDetectionThreshold(int threshold) {
@@ -76,8 +77,8 @@ void MovementDetector::applyChangesIfRequired() {
 std::vector<cv::Rect> MovementDetector::processImage(cv::Mat workingImage) {
     backgroundSubstractor_m->apply(workingImage, workingImage);
 
-    cv::erode(workingImage, workingImage, {});
-    cv::dilate(workingImage, workingImage, {});
+    cv::erode(workingImage, workingImage, morphKernel_m);
+    cv::dilate(workingImage, workingImage, morphKernel_m);
     cv::threshold(workingImage, workingImage, detectionThreshold_m, MaxPixelValue, cv::THRESH_BINARY);
 
     std::vector<std::vector<cv::Point>> contours;
@@ -85,7 +86,7 @@ std::vector<cv::Rect> MovementDetector::processImage(cv::Mat workingImage) {
 
     std::vector<cv::Rect> rectangles;
     for (const auto& i : contours) {
-        if (cv::contourArea(i) > detectionRectangleMinimunSize_m) {
+        if (cv::contourArea(i) > detectionRectangleMinimumSize_m) {
             rectangles.emplace_back(cv::boundingRect(i));
         }
     }

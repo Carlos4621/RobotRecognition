@@ -61,12 +61,14 @@ private:
 
     cv::Ptr<cv::BackgroundSubtractor> backgroundSubstractor_m;
 
+    cv::Mat morphKernel_m;
+
     int history_m{ 500 };
     double threshold_m{ 16 };
     bool detectShadows_m{ false };
     bool changesToApplyToBackgroundSubstractor_m{ false };
 
-    size_t detectionRectangleMinimunSize_m{ 5000 };
+    size_t detectionRectangleMinimumSize_m{ 5000 };
     int detectionThreshold_m{ 50 };
 
     void startWorker(const cv::Mat& image);
